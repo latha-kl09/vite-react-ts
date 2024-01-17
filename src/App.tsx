@@ -1,33 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import CourseGoalList from "./components/CourseGoalList.tsx";
+import Header from "./components/Header.tsx";
+import goalsImage from "./assets/react.svg"
+import { useState } from "react";
+import NewGoal from "./components/NewGoal.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+export type CourseGoal ={
+  title:string;
+  description:string;
+  id: number;
 }
 
-export default App
+export default function App(){
+  const [ goals, setGoals]= useState<CourseGoal[]>([]);
+
+  function addGoalHandler(goal: string, summary: string){
+    setGoals(prevGoals =>{
+      const newGoal:CourseGoal ={
+        id: Math.random(),
+        title: goal,
+        description: summary,
+      };
+      return[...prevGoals, newGoal]  
+    });
+  }
+
+  function deleteHandler(id : number){
+    setGoals(prevGoals => prevGoals.filter((goal)=> goal.id !== id));
+
+  }
+
+  return (
+    <main>
+      <Header image={{src:goalsImage, alt: 'A list of goals'}}>
+        <h1>Your Course Goals </h1>
+      </Header>
+      <NewGoal onAddGoal={addGoalHandler}/>
+      <CourseGoalList goals={goals} onDeleteGoal={deleteHandler}></CourseGoalList>
+    </main>
+  )
+}
