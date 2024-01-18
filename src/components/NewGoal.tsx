@@ -14,13 +14,14 @@ export default function NewGoal({onAddGoal}:NewGoalProps){
         const enteredGoal = goal.current!.value;
         const enteredSummary = summary.current!.value;
 
+        event.currentTarget.reset();
         onAddGoal(enteredGoal, enteredSummary);
 
     }
 
 
     return (
-    <form onClick={submitHandle}>
+    <form onSubmit={submitHandle}>
         <p>
             <label htmlFor="goal">Your Goal</label>
             <input id="goal" type="text" ref={goal}/>
